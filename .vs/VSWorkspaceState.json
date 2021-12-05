@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\contracts"
   ],
+  "SelectedNode": "\\contracts\\NFTMarket.sol",
   "PreviewInSolutionExplorer": false
 }
