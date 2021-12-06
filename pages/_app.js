@@ -12,12 +12,12 @@ function MyApp({ Component, pageProps }) {
             Home
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/my-assets">
             <a className="mr-6 text-pink">
             My Assets
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/create-item">
             <a className="mr-6 text-pink">
             Sell Asset
             </a>
