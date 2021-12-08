@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
             Sell Asset
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/dashboard">
             <a className="mr-6 text-pink">
             Dashboard
             </a>
