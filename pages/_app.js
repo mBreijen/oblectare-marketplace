@@ -1,7 +1,33 @@
 import '../styles/globals.css'
 import Link from 'next/link'
+import React, {useState} from 'react'
+import { ethers } from 'ethers'
 
 function MyApp({ Component, pageProps }) {
+
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [defaultAccount, setDefaultAccount] = useState(null)
+  const [connButtonText, setConnButtonText] = useState("Connect Wallet")
+
+  const [provider, setProvider] = useState(null)
+  const [signer, setSigner] = useState(null)
+
+  const connectWalletHandler = () => {
+    if (window.ethereum) {
+      window.ethereum.request({method: 'eth_requestAccounts'})
+      .then(result => {
+        accountChangedHandler(result[0])
+        setConnButtonText('Wallet Connected')
+      })
+    } else {
+      setErrorMessage("Need to install Metamask!")
+    }
+  }
+
+  const accountChangedHandler = (newAccount) => {
+    setDefaultAccount(newAccount)
+  }
+
   return (
     <div>
       <nav className="border-b p-6">
@@ -12,21 +38,24 @@ function MyApp({ Component, pageProps }) {
             Home
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/my-assets">
             <a className="mr-6 text-pink">
             My Assets
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/create-item">
             <a className="mr-6 text-pink">
             Sell Asset
             </a>
           </Link>
-          <Link href="/">
+          <Link href="/dashboard">
             <a className="mr-6 text-pink">
             Dashboard
             </a>
           </Link>
+
+          <button onClick={connectWalletHandler}>{connButtonText}</button>
+          {errorMessage}
         </div>
 
       </nav>
