@@ -1,4 +1,4 @@
-# Official Oblectare NFT Marketplace and Music Distributor
+# Oblectare NFT Marketplace and Music Distributor
 
 Here are the commands to create and run a local node to test out the NFT database.
 
