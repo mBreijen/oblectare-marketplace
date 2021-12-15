@@ -123,6 +123,7 @@ contract NFTMarket is ReentrancyGuard {
 
 		return items;
 	}
+	
 
 	//Fetch my own NFTs
 

@@ -72,7 +72,6 @@ export default function CreateItem(){
         listingPrice = listingPrice.toString()
 
         console.log(listingPrice)
-
         
         transaction = await contract.createMarketItem(
             nftaddress, tokenId, price, { value: listingPrice }
