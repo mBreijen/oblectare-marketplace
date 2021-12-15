@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
+import Link from 'next/link'
 
 import { nftaddress, nftmarketaddress } from '../config.js'
 
@@ -37,6 +38,8 @@ export default function Home() {
           name: meta.data.name,
           description: meta.data.description,
         }
+
+        
         return item
       }))
       setNfts(items)
@@ -71,6 +74,7 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {
             nfts.map((nft, i) => (
+              <Link href={'/asset/' + nft.seller + "/" + nft.tokenId} key={nft.tokenId}>
               <div key={i} className="border shadow rounded-xl overflow-hidden">
                 <img src={nft.image} />
                 <div className="p-4">
@@ -82,11 +86,12 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="p-4 bg-black">
-                  <p className="text-2xl mb-4 font-bold text-white">{nft.price} OBLEC</p>
+                  <p className="text-2xl mb-4 font-bold text-white">{nft.price} OBLEC v</p>
                   <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => buyNft(nft)}>Buy
                   </button>
                 </div>
               </div>
+              </Link>
             ))
           }
         </div>
