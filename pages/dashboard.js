@@ -16,8 +16,8 @@ export default function Dashboard() {
     const [nfts, setNfts] = useState([])
     const [sold, setSold] = useState([])
 
-
     const [loadingState, setLoadingState] = useState('not-loaded')
+
     useEffect(() => {
         loadNFTs()
     }, [])

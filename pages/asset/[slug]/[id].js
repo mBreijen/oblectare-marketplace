@@ -27,12 +27,9 @@ export default function NFTDetails() {
         const tokenId = window.location.href;
         const urlArray = tokenId.split("/");
 
-        const numArray = urlArray[5]
-        const newNum = numArray - 1
+        const numArray = urlArray[5] - 1
 
-        console.log(newNum)
-
-        setNft(newNum)
+        setNft(numArray)
     }
 
     async function loadNFTs() {

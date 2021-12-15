@@ -57,23 +57,24 @@ export default function MyAssets() {
                         nfts.map((nft, i) => (
 
                             <Link href={'/asset/' + nft.seller + "/" + nft.tokenId} key={nft.tokenId}>
-                            <div key={i} className="border shadow rounded-xl overflow-hidden">
-                                <img src={nft.image} className="rounded" />
-                                <div className="p-4 bg-black">
-                                    <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC, {nft.tokenId}</p>
+                                <div key={i} className="border shadow rounded-xl overflow-hidden">
+                                    <img src={nft.image} className="rounded" />
+
+                                    <div className="p-4 bg-black">
+                                        <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC, {nft.tokenId}</p>
+                                    </div>
+
+                                    <button className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg">
+                                        Sell NFT</button>
                                 </div>
-                                <button 
-                                className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg"
-                                >
-                                    Sell NFT</button>
-                            </div>
+                                
+                                <div key={i} className="border shadow rounded-xl overflow-hidden">
+                                    <img src={nft.image} className="rounded" />
+                                    <div className="p-4 bg-black">
+                                        <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC</p>
+                                    </div>
+                                </div>
                             </Link>
-                            <div key={i} className="border shadow rounded-xl overflow-hidden">
-                                <img src={nft.image} className="rounded" />
-                                <div className="p-4 bg-black">
-                                    <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC</p>
-                                </div>
-                            </div>
                         ))
                     }
                 </div>
