@@ -40,8 +40,6 @@ export default function MyAssets() {
                 image: meta.data.image,
             }
             return item
-
-
         }))
         setNfts(items)
         setLoadingState('loaded')
@@ -57,6 +55,7 @@ export default function MyAssets() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                     {
                         nfts.map((nft, i) => (
+
                             <Link href={'/asset/' + nft.seller + "/" + nft.tokenId} key={nft.tokenId}>
                             <div key={i} className="border shadow rounded-xl overflow-hidden">
                                 <img src={nft.image} className="rounded" />
@@ -69,6 +68,12 @@ export default function MyAssets() {
                                     Sell NFT</button>
                             </div>
                             </Link>
+                            <div key={i} className="border shadow rounded-xl overflow-hidden">
+                                <img src={nft.image} className="rounded" />
+                                <div className="p-4 bg-black">
+                                    <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC</p>
+                                </div>
+                            </div>
                         ))
                     }
                 </div>
