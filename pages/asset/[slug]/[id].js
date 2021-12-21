@@ -68,10 +68,6 @@ export default function NFTDetails() {
         setLoadingState('loaded')
       }
 
-    //if (loadingState === 'loaded') return (
-    //    <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
-    //) 
-
     if (nftVal[nft] === undefined) return (
         <h1 className="py-10 px-20 text-3xl">Doesn't exist</h1>
     )
@@ -88,10 +84,18 @@ export default function NFTDetails() {
                             <div className="p-4 bg-black">
                                 <p className="text-2xl font-bold text-white">Price - {nftVal[nft].price} OBLEC, {nftVal[nft].tokenId}</p>
                             </div>
-                            <button 
-                            className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg"
-                            >
-                                Sell NFT</button>
+                            <div className="px-2 py-4">
+                                <button 
+                                className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg"
+                                >
+                                    Sell NFT</button>
+                                <Link href={'/asset/' + nftVal[nft].seller + "/" + nftVal[nft].tokenId + "/edit"} key={nft.tokenId}>
+                                    <button 
+                                    className="font-bold mt-4 bg-pink-500 text-white px-10 rounded p-4 shadow-lg"
+                                    >
+                                        Edit</button>
+                                </Link>
+                            </div>
                     </div>
                 </div>
             </div>

@@ -27,6 +27,8 @@ contract NFTMarket is ReentrancyGuard {
 		address payable owner;
 		uint256 price;
 		bool sold;
+		bool forsale;
+		bool burned;
 	}
 
 	mapping(uint256 => MarketItem) private idToMarketItem;
@@ -40,7 +42,9 @@ contract NFTMarket is ReentrancyGuard {
 		address seller,
 		address owner,
 		uint256 price,
-		bool sold
+		bool sold,
+		bool forsale,
+		bool burned
 	);
 
 	//Simply the listing price of a market item
@@ -69,6 +73,8 @@ contract NFTMarket is ReentrancyGuard {
 			payable(msg.sender),
 			payable(address(0)),
 			price,
+			false,
+			true,
 			false
 		);
 
@@ -81,6 +87,8 @@ contract NFTMarket is ReentrancyGuard {
 			msg.sender,
 			address(0),
 			price,
+			false,
+			true,
 			false
 		);
 	}
@@ -99,9 +107,28 @@ contract NFTMarket is ReentrancyGuard {
 		IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
 		idToMarketItem[itemId].owner = payable(msg.sender);
 		idToMarketItem[itemId].sold = true;
+		idToMarketItem[itemId].forsale = false;
 		_itemsSold.increment();
 		payable(owner).transfer(listingPrice);
 
+	}
+
+	function burnItem(
+		address nftContract,
+		uint256 itemId
+		) public payable nonReentrant {
+		uint tokenId = idToMarketItem[itemId].tokenId;
+		address burnAddress = 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199;
+		//require(msg.sender == idToMarketItem[itemId].owner, "you are not the owner");
+
+		idToMarketItem[itemId].seller = payable(burnAddress);
+		IERC721(nftContract).transferFrom(address(this), burnAddress, tokenId);
+		idToMarketItem[itemId].owner = payable(burnAddress);
+		idToMarketItem[itemId].sold = true;
+		idToMarketItem[itemId].forsale = false;
+		idToMarketItem[itemId].burned = true;
+		_itemsSold.increment();
+		payable(owner).transfer(listingPrice);
 	}
 
 	//Get all the market items currently available
@@ -177,4 +204,6 @@ contract NFTMarket is ReentrancyGuard {
 		}
 	return items;
 	}
+
+	
 }
