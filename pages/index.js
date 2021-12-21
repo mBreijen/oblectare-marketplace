@@ -29,6 +29,7 @@ export default function Home() {
         const tokenUri = await tokenContract.tokenURI(i.tokenId)
         const meta = await axios.get(tokenUri)
         let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+        
         let item = {
           price,
           tokenId: i.tokenId.toNumber(),
@@ -39,8 +40,10 @@ export default function Home() {
           description: meta.data.description,
         }
 
+        if(i.burned != true) {
+          return item
+        }
         
-        return item
       }))
       setNfts(items)
       setLoadingState('loaded')

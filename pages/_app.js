@@ -1,7 +1,8 @@
 import '../styles/globals.css'
 import Link from 'next/link'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { ethers } from 'ethers'
+import Web3Modal from 'web3modal'
 
 function MyApp({ Component, pageProps }) {
 
@@ -11,6 +12,25 @@ function MyApp({ Component, pageProps }) {
 
   const [provider, setProvider] = useState(null)
   const [signer, setSigner] = useState(null)
+
+  useEffect(() => {
+    checkWalletConnection()
+  }, [])
+
+  async function checkWalletConnection() {
+    
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const accounts = await provider.listAccounts();
+
+    console.log(accounts)
+
+    if (accounts <= 1){
+      setConnButtonText('Connect Wallet')
+    } else {
+      setConnButtonText('Wallet Connected')
+    }
+
+  }
 
   const connectWalletHandler = () => {
     if (window.ethereum) {

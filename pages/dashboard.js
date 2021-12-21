@@ -16,8 +16,8 @@ export default function Dashboard() {
     const [nfts, setNfts] = useState([])
     const [sold, setSold] = useState([])
 
-
     const [loadingState, setLoadingState] = useState('not-loaded')
+
     useEffect(() => {
         loadNFTs()
     }, [])
@@ -32,10 +32,13 @@ export default function Dashboard() {
         const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
         const data = await marketContract.fetchItemsCreated()
 
+        console.log(data)
+
         const items = await Promise.all(data.map(async i => {
             const tokenUri = await tokenContract.tokenURI(i.tokenId)
             const meta = await axios.get(tokenUri)
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+
             let item = {
                 price,
                 tokenId: i.tokenId.toNumber(),
@@ -43,14 +46,37 @@ export default function Dashboard() {
                 owner: i.owner,
                 image: meta.data.image,
             }
-            return item
+
+            if(i.burned != true) {
+                return item
+            }
         }))
+
+    
         
-        const soldItems = items.filter(i => i.sold)
-        setSold(soldItems)
+        //const soldItems = items.filter(i => i.burned == false)
+        //setSold(soldItems)
         setNfts(items)
         setLoadingState('loaded')
     }
+
+    async function burnNFT(nft) {
+        const web3Modal = new Web3Modal()
+        const connection = await web3Modal.connect()
+        const provider = new ethers.providers.Web3Provider(connection)
+        const signer = provider.getSigner()
+
+        const contract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
+        
+        console.log(nft.tokenId)
+
+        const transaction = await contract.burnItem(
+            nftaddress, nft.tokenId
+        )
+        await transaction.wait()
+        loadNFTs()
+    }
+
     return(
         <div>
             <div className="p-4">
@@ -58,12 +84,34 @@ export default function Dashboard() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                     {
                         nfts.map((nft, i) => (
+                            <Link href={'/asset/' + nft.seller + "/" + nft.tokenId} key={nft.tokenId}>
                             <div key={i} className="border shadow rounded-xl overflow-hidden">
                                 <img src={nft.image} className="rounded" />
                                 <div className="p-4 bg-black">
                                     <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC</p>
                                 </div>
                             </div>
+                            </Link>
+                        ))
+                    }
+                </div>
+
+                <h2 className="text-2xl py-2">Items For Sale</h2> 
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+                    {
+                        nfts.map((nft, i) => (
+                            
+                            <div key={i} className="border shadow rounded-xl overflow-hidden">
+                                <Link href={'/asset/' + nft.seller + "/" + nft.tokenId} key={nft.tokenId}>
+                                    <img src={nft.image} className="rounded" />
+                                </Link>
+                                <div className="p-4 bg-black">
+                                    <p className="text-2xl font-bold text-white">Price - {nft.price} OBLEC</p>
+                                </div>
+                                <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => burnNFT(nft)}>Burn
+                                </button>
+                            </div>
+                            
                         ))
                     }
                 </div>
